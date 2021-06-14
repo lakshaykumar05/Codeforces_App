@@ -88,18 +88,18 @@ class _FrontScreenState extends State<FrontScreen> {
                   user_det = await CodeForces().getUserData(userName);
                   user_all_det = await CodeForces().getAllInfo(userName);
            //       print(user_all_det);
-                  if(user_det==null){
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) => popUpDialog(context),
-                    );
-                  }
-                  else {
+           //        if(user_det==null){
+           //          showDialog(
+           //              context: context,
+           //              builder: (BuildContext context) => popUpDialog(context),
+           //          );
+           //        }
+           //        else {
             //        fun(user_all_det);
                     await Navigator.push(context, MaterialPageRoute(builder: (context){
                       return DisplayScreen(userDetails: user_det,userAllInfo: user_all_det);
                     }));
-                  }
+                  // }
                 },
               //  color: Colors.black,
               //   style: ButtonStyle(
@@ -122,33 +122,33 @@ class _FrontScreenState extends State<FrontScreen> {
   }
 }
 
-
-Widget popUpDialog(BuildContext context) {
-  return new AlertDialog(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
-    title: Center(child: Text('Invalid Handle',
-    style: TextStyle(
-      fontSize: 22,
-    ),)),
-    actions: <Widget>[
-      new FlatButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        textColor: Theme.of(context).primaryColor,
-
-        child: Padding(
-          padding: const EdgeInsets.only(right:108.0),
-          child: Text('OK',style: TextStyle(
-            fontSize: 21,
-          ),),
-          //FaIcon(FontAwesomeIcons.times,size: 50,)
-          ),
-        ),
-        ],
-  );
-}
-
+//
+// Widget popUpDialog(BuildContext context) {
+//   return new AlertDialog(
+//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+//     title: Center(child: Text('Invalid Handle',
+//     style: TextStyle(
+//       fontSize: 22,
+//     ),)),
+//     actions: <Widget>[
+//       new FlatButton(
+//         onPressed: () {
+//           Navigator.of(context).pop();
+//         },
+//         textColor: Theme.of(context).primaryColor,
+//
+//         child: Padding(
+//           padding: const EdgeInsets.only(right:108.0),
+//           child: Text('OK',style: TextStyle(
+//             fontSize: 21,
+//           ),),
+//           //FaIcon(FontAwesomeIcons.times,size: 50,)
+//           ),
+//         ),
+//         ],
+//   );
+// }
+//
 
 
 // FlatButton(

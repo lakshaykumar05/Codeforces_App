@@ -56,6 +56,20 @@ class _ContestScreenState extends State<ContestScreen> {
    //   print(formatted);
 
       contest_data['result'][i]['startTimeSeconds'] = formatted;
+
+////////
+
+      // int time_stamp= contest_data['result'][i]['durationSeconds'];
+      //
+      // var dur = new DateTime.fromMicrosecondsSinceEpoch(time_stamp*1000000);
+      //
+      // final DateFormat formatter_dur = DateFormat('hh:mm');
+      // final String formatted_dur = formatter_dur.format(dur);
+      //
+      // contest_data['result'][i]['durationSeconds'] = formatted_dur+formatted;
+      // //
+      // print(contest_data['result'][i]['durationSeconds']);
+
   //
   // //    print(contest_data['result'][i]['startTimeSeconds']);
 
@@ -83,12 +97,12 @@ class _ContestScreenState extends State<ContestScreen> {
     var Previous_contests_reverse = in__Reversed.toList();
 
 
-    mainList = Running_contests_reverse + Upcoming_contests_reverse + Previous_contests_reverse;
+    mainList = Running_contests_reverse + Upcoming_contests_reverse;
     // mainList = new List.from(Running_contests_reverse)..addAll(Upcoming_contests_reverse);
    // print(Upcoming_contests);
    //  print(mainList);
 
-    return Upcoming_contests_reverse;
+    return mainList;
   }
 
   @override
@@ -98,7 +112,7 @@ class _ContestScreenState extends State<ContestScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text('Contest',
+        title: Text('Running/Upcoming Contests',
         style: TextStyle(
           color: Colors.white,
         ),),
@@ -110,10 +124,9 @@ class _ContestScreenState extends State<ContestScreen> {
           if(snapshot.data==null){
             return Container(
               child: Center(
-                child: Text('Loading',style: TextStyle(
+                child: Text('Loading...',style: TextStyle(
                   color: Colors.black,
                 ),),
-                
               ),
             );
           }
@@ -127,7 +140,10 @@ class _ContestScreenState extends State<ContestScreen> {
                 );
                 return ListTile(
             //      title: Text("Upcoming"),
-                  title: Text(snapshot.data[index].name),
+                  title: Text(snapshot.data[index].name,style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),),
                   subtitle: Text(snapshot.data[index].start_time),
                   onTap: (){
                     int contestNumber=snapshot.data[index].number;
