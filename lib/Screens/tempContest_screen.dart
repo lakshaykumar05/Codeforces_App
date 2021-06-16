@@ -1,23 +1,18 @@
-import 'package:codeforces_app/Screens/display_screen.dart';
-import 'package:codeforces_app/Screens/front_screen.dart';
 import 'package:flutter/material.dart';
-import '../Screens/contest_screen.dart';
+import '../Networking/code_forces.dart';
 import 'dart:async';
-import 'package:codeforces_app/Networking/code_forces.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
-class startScreen extends StatefulWidget {
-  const startScreen({Key key}) : super(key: key);
+class TempContestScreen extends StatefulWidget {
+  const TempContestScreen({Key key}) : super(key: key);
 
   @override
-  _startScreenState createState() => _startScreenState();
+  _TempContestScreenState createState() => _TempContestScreenState();
 }
 
-class _startScreenState extends State<startScreen> {
-  static final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+class _TempContestScreenState extends State<TempContestScreen> {
+
 
   int contestNumber;
   String url;
@@ -103,25 +98,57 @@ class _startScreenState extends State<startScreen> {
     return mainList;
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    Timer(
-        Duration(seconds: 3),
-            () =>
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => ContestScreen())));
-
-    var assetImage = new AssetImage('images/codeforces.png');
-
-    var image= new Image(image: assetImage,height: 200,);
-
-    return Container(
-      decoration: new BoxDecoration(color: Colors.white),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: image,
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        title: Text('Running/Upcoming Contests',
+        style: TextStyle(
+          color: Colors.white,
+        ),),
+      ),
+      body: FutureBuilder(
+        future: update_upcoming_contest(),
+        builder: (BuildContext context , AsyncSnapshot snapshot){
+          //    print(snapshot.data);
+          if(snapshot.data==null){
+            return Container(
+              child: Center(
+                child: Text('Loading...',style: TextStyle(
+                  color: Colors.black,
+                ),),
+              ),
+            );
+          }
+          else {
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                Divider(
+                  thickness: 5,
+                  color: Colors.black,
+                );
+                return ListTile(
+                  //      title: Text("Upcoming"),
+                  title: Text(snapshot.data[index].name,style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),),
+                  subtitle: Text(snapshot.data[index].start_time),
+                  onTap: (){
+                    contestNumber=snapshot.data[index].number;
+                    url='https://codeforces.com/contests/$contestNumber';
+                    launch(url);
+                  },
+                );
+              },
+            );
+          }
+        },
       ),
     );
   }

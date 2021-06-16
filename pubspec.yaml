@@ -53,6 +53,10 @@ flutter:
     - family: Pacifico
       fonts:
         - asset: fonts/Pacifico-Regular.ttf
+    - family: Ubuntu
+      fonts:
+        - asset: fonts/Ubuntu-M.ttf
+        - asset: fonts/Ubuntu-MI.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

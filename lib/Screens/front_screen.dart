@@ -21,9 +21,8 @@ class _FrontScreenState extends State<FrontScreen> {
   @override
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
           backgroundColor: Colors.blue,
           body: Column(
             children: <Widget>[
@@ -47,11 +46,12 @@ class _FrontScreenState extends State<FrontScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
               Container(
-                padding: EdgeInsets.all(5),
+                // height: size.height/2,
+                padding: EdgeInsets.all(35),
                 child: TextField(
                     style: TextStyle(
                       color: Colors.black,
@@ -59,11 +59,11 @@ class _FrontScreenState extends State<FrontScreen> {
                       decoration: InputDecoration(
                        fillColor: Colors.white,
                        filled: true,
-                       icon: Icon(
-                         Icons.account_circle_rounded,
-                         size: 75.0,
-                         color: Colors.black,
-                       ) ,
+                       // icon: Icon(
+                       //   Icons.account_circle_rounded,
+                       //   size: 75.0,
+                       //   color: Colors.black,
+                       // ) ,
                         hintText: 'Username',
                         hintStyle: TextStyle(
                           color: Colors.grey,
@@ -116,9 +116,7 @@ class _FrontScreenState extends State<FrontScreen> {
               ),
             ],
           ),
-        ),
-      ),
-    );
+        );
   }
 }
 

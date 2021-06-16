@@ -95,4 +95,5 @@ const kstyleTextStyle = TextStyle(
 //  fontFamily: 'Pacifico',
   fontSize: 24,
   fontWeight: FontWeight.bold,
+  fontFamily: 'Ubuntu',
 );

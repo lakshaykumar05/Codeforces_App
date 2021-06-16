@@ -4,6 +4,7 @@ import 'Screens/front_screen.dart';
 import 'Screens/loading_screen.dart';
 import 'Screens/contest_screen.dart';
 import 'Splash Screen/start_screen.dart';
+// static final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 void main() {
   runApp(MyApp());
@@ -12,15 +13,18 @@ void main() {
 
 
 class MyApp extends StatelessWidget {
+  static final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // navigatorKey: NavigationService.navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: startScreen(),
+      home: ContestScreen(),
     );
   }
 }

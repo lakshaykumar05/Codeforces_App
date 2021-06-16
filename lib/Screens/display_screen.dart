@@ -34,6 +34,9 @@ class _DisplayScreenState extends State<DisplayScreen> {
     calc_values(widget.userAllInfo);
   }
 
+  Map<DateTime,int>everyday_Data={};
+  Map<DateTime,int>temp={};
+
   Map<String,double>countTags={};
 
   Map<String,double>countRating={};
@@ -53,6 +56,36 @@ class _DisplayScreenState extends State<DisplayScreen> {
     // print(user_Info);
 
     for(int i=0;i<user_Info['result'].length;i++) {
+
+      // For HeatMap
+
+      int timestamp = user_Info['result'][i]['creationTimeSeconds'];
+
+      var date = new DateTime.fromMicrosecondsSinceEpoch(timestamp*1000000);
+
+      final DateFormat formatter = DateFormat('dd-MM-yyyy');
+      final String formatted = formatter.format(date);
+
+      String dd=date.toString();
+      //
+      // for(int j=11;j<dd.length;j++){
+      //   if(dd[j]!=':'){
+      //     dd[j]='0';
+      //   }
+      // }
+
+      // print(date);
+      DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(dd);
+      //   print(date.runtimeType);
+      if(everyday_Data.containsKey(tempDate)){
+        everyday_Data[tempDate]++;
+      }
+      else{
+        everyday_Data[tempDate]=1;
+      }
+      // everyday_Data[date]++;
+
+
 
       // For verdict
 
@@ -122,7 +155,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
     final countRatingMap = LinkedHashMap.fromEntries(sortedMap1.entries.toList().reversed);
 
-    print(countRatingMap);
+    // print(countRatingMap);
 
     var keysss=List.from(countRatingMap.keys);
 
@@ -171,10 +204,12 @@ class _DisplayScreenState extends State<DisplayScreen> {
       }
     });
 
+    // print(TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 33))));
+    //   TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
+    //   TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
 
-
+    print(everyday_Data);
     // print(tempMap);
-
     // print(reverseM);
   }
 
@@ -189,9 +224,11 @@ class _DisplayScreenState extends State<DisplayScreen> {
   int maxRating;
   int friends;
 
+  List<String>values=[];
+
   void updateUI(dynamic userData) {
   //  print(userAllInfo);
-    userName=userData['result'][0]['handle'];
+    userName=userData['result'][0]['handle'];  values.add(userName);
     photo=userData['result'][0]['titlePhoto'];
     contribution=userData['result'][0]['contribution'];
     rank = userData['result'][0]['rank'];
@@ -200,6 +237,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
     maxRating=userData['result'][0]['maxRating'];
     maxRank=userData['result'][0]['maxRank'];
     friends=userData['result'][0]['friendOfCount'];
+    values.add(userName);  values.add(maxRating.toString()); values.add(rating.toString()); values.add(maxRank); values.add(rank); values.add(contribution.toString()); values.add(friends.toString());
   }
 
   _printProperties(String text){
@@ -211,6 +249,12 @@ class _DisplayScreenState extends State<DisplayScreen> {
       ),
     );
   }
+
+  // List<E>.generate(int length,E generator(int index),{
+  //   bool growable=true
+  // })
+
+  List<String>labels=['Username','Maxrating','Rating','Maxrank','Rank','Contribution','Friends'];
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -248,75 +292,257 @@ class _DisplayScreenState extends State<DisplayScreen> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child:
-                          // Column(
-                          //   children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left:30.0,top: 10),
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      _printProperties('Username:'),
-                                      _printProperties('MaxRating:'),
-                                      _printProperties('Rating:'),
-                                      _printProperties('MaxRank:'),
-                                      _printProperties('Rank:'),
-                                      _printProperties('Contribution:'),
-                                      _printProperties('Friends:'),
-                                    ],
-                                  ),
-                                ),
+                    Column(
+                     // row= column , column=widget , widget=label,value
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: FittedBox(fit: BoxFit.scaleDown,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top:10.0,left: 20),
+                                      child: Text(labels[0],style: kstyleTextStyle,),
+                                    )),
                               ),
                             ),
-                              Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      FittedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                          child: Text('$userName',style: Values().fun(rating),),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Text('$maxRating',style: Values().fun(maxRating),),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Text('$rating',style: Values().fun(rating),),
-                                      ),
-                                      FittedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                          child: Text('$maxRank',style: Values().ranking(maxRank),),
-                                        ),
-                                      ),
-                                      FittedBox(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                          child: Text('$rank',style: Values().ranking(rank),),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Text('$contribution',style: kstyleTextStyle,),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                        child: Text('$friends',style: kstyleTextStyle,),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: FittedBox(fit: BoxFit.scaleDown,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 10,left: 20),
+                                      child: Text('$userName',style: Values().fun(rating),),
+                                    )),
                               ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[1],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(maxRating.toString(),style: Values().fun(maxRating),),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.brown/,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[2],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.yellowAccent,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(rating.toString(),style: Values().fun(maxRating),),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.brown,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[3],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.yellowAccent/,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(maxRank,style: Values().ranking(maxRank),),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.brown,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[4],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.yellowAccent,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(rank,style: Values().ranking(rank),),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.brown,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[5],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.yellowAccent,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(contribution.toString(),style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.brown,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(labels[6],style: kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.centerLeft,
+                                // color: Colors.yellowAccent,
+                                child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                  padding: const EdgeInsets.only(top:10.0,left: 20),
+                                  child: Text(friends.toString(),style:kstyleTextStyle,),
+                                )),
+                              ),
+                            ),
+                          ],
+                        ),
+                    // labels.generate(7, (index) => printvalue(labels[index],values[index]));
+                        // List.generate(7, (index) => newWiget(li[index],value,Textstyle));
+                        // Expanded(
+                        //   child:
+                        //   // Column(
+                        //   //   children: [
+                        //       Padding(
+                        //         padding: const EdgeInsets.only(left:30.0,top: 10),
+                        //         child: Container(
+                        //           child: Column(
+                        //             mainAxisAlignment: MainAxisAlignment.center,
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             children: [
+                        //               _printProperties('Username:'),
+                        //               _printProperties('MaxRating:'),
+                        //               _printProperties('Rating:'),
+                        //               _printProperties('MaxRank:'),
+                        //               _printProperties('Rank:'),
+                        //               _printProperties('Contribution:'),
+                        //               _printProperties('Friends:'),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //       Expanded(
+                        //         child: Container(
+                        //           child: Column(
+                        //             // mainAxisAlignment: MainAxisAlignment.center,
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             children: [
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //                   child: Text('$userName',style: Values().fun(rating),),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //                   child: Text('$maxRating',style: Values().fun(maxRating),),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //                   child: Text('$rating',style: Values().fun(rating),),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        //                   child: Text('$maxRank',style: Values().ranking(maxRank),),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.only(top: 14.0),
+                        //                   child: Text('$rank',style: Values().ranking(rank),),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.only(top: 14.0),
+                        //                   child: Text('$contribution',style: kstyleTextStyle,),
+                        //                 ),
+                        //               ),
+                        //               FittedBox(
+                        //                 child: Padding(
+                        //                   padding: const EdgeInsets.only(top: 14.0),
+                        //                   child: Text('$friends',style: kstyleTextStyle,),
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         ),
+                        //       ),
                             ],
                           ),
                         // ),
@@ -325,7 +551,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   // ],
                 ),
               SizedBox(
-                height: 15,
+                height: 25,
               ),
               // ),
                   Container(
@@ -336,7 +562,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                       children: <Widget> [
                         Text(
                           'Problem Tags',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                        SizedBox(height: 100.0,),
+                        SizedBox(height: 120.0,),
                         PieChart(
                           // colorList: [Colors.blue,Colors.blue,Colors.blue,Colors.red,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.yellow,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue],
                           dataMap: finalCountTagMap,
@@ -370,6 +596,9 @@ class _DisplayScreenState extends State<DisplayScreen> {
                       ],
                     ),
                   ),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: size.width,
                 // height: size.height,
@@ -378,7 +607,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   children: <Widget> [
                     Text(
                       'Verdict',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                    SizedBox(height: 100.0,),
+                    SizedBox(height: 120.0,),
                     PieChart(
                       dataMap: countVerdict,
                       animationDuration: Duration(seconds: 4),
@@ -411,15 +640,18 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
               Container(
                 width: size.width,
-                height: size.height,
+                // height: size.height,
                 child: Column(
                   //      mainAxisSize: MainAxisSize.min,
                   children: <Widget> [
                     Text(
                       'Problem Rating',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                    SizedBox(height: 100.0,),
+                    SizedBox(height: 120.0,),
                     PieChart(
                       dataMap: finalCountRating,
                       animationDuration: Duration(seconds: 4),
@@ -451,38 +683,56 @@ class _DisplayScreenState extends State<DisplayScreen> {
                   ],
                 ),
               ),
-              HeatMapCalendar(
-                input: {
-                  TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 3))): 5,
-                  TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
-                  TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
-                  TimeUtils.removeTime(DateTime.now()): 5,
-                },
-                colorThresholds: {
-                  1: Colors.green[100],
-                  10: Colors.green[300],
-                  30: Colors.green[500]
-                },
-                weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                monthsLabels: [
-                  "",
-                  "Jan",
-                  "Feb",
-                  "Mar",
-                  "Apr",
-                  "May",
-                  "Jun",
-                  "Jul",
-                  "Aug",
-                  "Sep",
-                  "Oct",
-                  "Nov",
-                  "Dec",
-                ],
-                squareSize: 16.0,
-                textOpacity: 0.3,
-                labelTextColor: Colors.blueGrey,
-                dayTextColor: Colors.blue[500],
+              SizedBox(
+                height: 30,
+              ),
+              Container(
+                width: size.width,
+                child: Column(
+                  children: <Widget>[
+                    // FittedBox(
+                    //   child: Text('Submission Heatmap ',style:
+                    //     TextStyle(
+                    //       color: Colors.black,
+                    //       fontSize: 24,
+                    //       fontWeight: FontWeight.bold,
+                    //     ),),
+                    // ),
+                    // SizedBox(
+                    //   height: 30,
+                    // ),
+                    HeatMapCalendar(
+                      input: everyday_Data,
+                      colorThresholds: {
+                        1: Colors.green[200],
+                        4: Colors.green[400],
+                        10: Colors.green[500],
+                        18: Colors.green[700],
+                        100: Colors.green[900],
+                      },
+                      weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+                      monthsLabels: [
+                        "",
+                        "Jan",
+                        "Feb",
+                        "Mar",
+                        "Apr",
+                        "May",
+                        "Jun",
+                        "Jul",
+                        "Aug",
+                        "Sep",
+                        "Oct",
+                        "Nov",
+                        "Dec",
+                      ],
+                      squareSize: 16.0,
+                      textOpacity: 0.3,
+                      labelTextColor: Colors.blueGrey,
+                      dayTextColor: Colors.blue[500],
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -493,265 +743,16 @@ class _DisplayScreenState extends State<DisplayScreen> {
 }
 
 
-
-
-
-
-// Column(
-// children: <Widget>[
-// Row(
-// children: <Widget>[
-// Expanded(
-// child: Padding(
-// padding: const EdgeInsets.all(5.0),
-// child: Image.network(photo,
-// height: 200,
-// ),
-// ),
-// ),
-// ],
-// ),
-// Container(
-// child: Column(
-// children: <Widget>[
-// Text('Username: $userName',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('MaxRating: $maxRating',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('MaxRank: $maxRank',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('Rank: $rank',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('Rating: $rating',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('Contribution: $contribution',
-// style: kstyleTextStyle,
-// ),
-// SizedBox(
-// height: 5,
-// ),
-// Text('Friends: $friends',
-// style: kstyleTextStyle,
-// ),
-// ],
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.all(8.0),
-// child: Container(
-// child: Column(
-// mainAxisSize: MainAxisSize.min,
-// children: <Widget> [
-// Text(
-// 'Time spent on daily tasks',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-// SizedBox(height: 10.0,),
-// Flexible(
-// child: charts.PieChart(
-// _seriesPieData,
-// animate: true,
-// animationDuration: Duration(seconds: 5),
-// // defaultRenderer: new charts.ArcRendererConfig(
-// //   arcWidth: 100,
-// //   arcRendererDecorators: [
-// //     new charts.ArcLabelDecorator(
-// //       labelPosition: charts.ArcLabelPosition.inside,
-// //     ),
-// //   ],
-// // ),
-// ),
-// ),
-// ],
-// ),
-// ),
-// ),
-// ],
-// ),
-//
-//
-//
-
-
-/*
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-             Padding(
-               padding: EdgeInsets.all(8.0),
-               child: ListView(
-                 children:<Widget>[
-                   Padding(
-                     padding: const EdgeInsets.all(8.0),
-             //        child: Image.network(photo),
-                   )
-                 ],
-               ),
-             )
-            ],
- */
-
-
-// Verdicts -> wrong_answer, ok, time_limit_exceeded
-
-class Task{
-  String task;
-  int taskValue;
-  Color colorVal;
-
-  Task(this.task,this.taskValue,this.colorVal);
-}
-
-
-
-
-
-                // Padding(
-                //     padding: const EdgeInsets.all(8.0),
-                //     child: Container(
-                //       child: Column(
-                //         mainAxisSize: MainAxisSize.min,
-                //         children: <Widget> [
-                //           Text(
-                //             'Time spent on daily tasks',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                //           SizedBox(height: 10.0,),
-                //           Flexible(
-                //             child: charts.PieChart(
-                //               _seriesPieData,
-                //               animate: true,
-                //               animationDuration: Duration(seconds: 5),
-                //               // defaultRenderer: new charts.ArcRendererConfig(
-                //               //   arcWidth: 100,
-                //               //   arcRendererDecorators: [
-                //               //     new charts.ArcLabelDecorator(
-                //               //       labelPosition: charts.ArcLabelPosition.inside,
-                //               //     ),
-                //               //   ],
-                //               // ),
-                //             ),
-                //           ),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-
-/*
-FittedBox(
-                                child: Text.rich(
-                                  // textAlign: TextAlign.center,
-                                  TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Username: ',
-                                      style: kstyleTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '$userName',
-                                      style: Values().fun(rating),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text.rich(
-                                  TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'MaxRating: ',
-                                      style: kstyleTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '$maxRating',
-                                      style: Values().fun(rating),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text.rich(
-                                  TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'MaxRank: ',
-                                      style: kstyleTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '$maxRank',
-                                      style: Values().ranking(maxRank),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text.rich(
-                                  TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Rank: ',
-                                      style: kstyleTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '$rank',
-                                      style: Values().ranking(rank),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text.rich(
-                                  TextSpan(children: <TextSpan>[
-                                    TextSpan(
-                                      text: 'Rating: ',
-                                      style: kstyleTextStyle,
-                                    ),
-                                    TextSpan(
-                                      text: '$rating',
-                                      style: Values().fun(rating),
-                                    ),
-                                  ]),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text('Contribution: $contribution',
-                                  style: kstyleTextStyle,
-                                  // textAlign: TextAlign.end,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              FittedBox(
-                                child: Text('Friends: $friends',
-                                  style: kstyleTextStyle,
-                                ),
-                              ),
- */
+// Row printvalue(String label,String value,TextStyle styl){
+//   return Row(
+//     children: [
+//       Flexible(
+//         child: Text(label,style: kstyleTextStyle,),
+//       ),
+//       // SizedBox(width: 15,),
+//       Flexible(
+//           child: Text(value,style: styl,),
+//       ),
+//     ],
+//   );
+// }
