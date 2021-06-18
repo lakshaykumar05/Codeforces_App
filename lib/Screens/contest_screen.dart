@@ -134,26 +134,26 @@ class _ContestScreenState extends State<ContestScreen> {
       // ),
       body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.red,
+        selectedItemColor: Colors.blueAccent,
         currentIndex: currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.black,
         iconSize: 29.0,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_sharp),
-            title: Text('Contest',style: TextStyle(color: Colors.yellowAccent),),
-            backgroundColor: Colors.red,
+            icon: Icon(Icons.calendar_today_sharp,color: Colors.white,),
+            title: Text('Contest',style: TextStyle(color: Colors.blueAccent),),
+            // backgroundColor: Colors.red,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            title: Text('Profile',style: TextStyle(color: Colors.yellowAccent),),
-            backgroundColor: Colors.blue,
+            title: Text('Profile',style: TextStyle(color: Colors.blueAccent),),
+            // backgroundColor: Colors.blue,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance),
-            title: Text('About',style: TextStyle(color: Colors.yellowAccent),),
-            backgroundColor: Colors.blue,
+            title: Text('About',style: TextStyle(color: Colors.blueAccent),),
+            // backgroundColor: Colors.blue,
           ),
         ],
         onTap: (index){

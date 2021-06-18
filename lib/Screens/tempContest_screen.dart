@@ -118,9 +118,18 @@ class _TempContestScreenState extends State<TempContestScreen> {
           if(snapshot.data==null){
             return Container(
               child: Center(
-                child: Text('Loading...',style: TextStyle(
-                  color: Colors.black,
-                ),),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 15,
+                    ),
+                  ],
+                ),
+                // child: Text('Loading...',style: TextStyle(
+                //   color: Colors.black,
+                // ),),
               ),
             );
           }

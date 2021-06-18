@@ -25,7 +25,7 @@ class DifferentColors{
      return ans;
    }
 
-   List<Color>allColorsOfRating=[Colors.pinkAccent,Colors.blueAccent,Colors.grey,Colors.black,Colors.deepPurple,Colors.deepOrange,Colors.indigo,Colors.brown,Colors.greenAccent,Colors.tealAccent,Colors.blueGrey,Colors.redAccent,Colors.yellow,Colors.black26,Colors.deepPurpleAccent];
+   List<Color>allColorsOfRating=[Colors.pinkAccent,Colors.blueAccent,Colors.grey,Colors.orange,Colors.deepPurple,Colors.deepOrange,Colors.indigo,Colors.brown,Colors.greenAccent,Colors.tealAccent,Colors.blueGrey,Colors.redAccent,Colors.yellow,Colors.black26,Colors.deepPurpleAccent];
 
    List<Color> Rating(int length){
      List<Color>ans=[];

@@ -5,9 +5,10 @@ class Values{
   TextStyle fun(int val){
     if(val<=1100) {
       return TextStyle(
-        color: Colors.black,
+        color: Colors.grey,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
       else if(val<1400){
@@ -15,6 +16,7 @@ class Values{
         color: Colors.green,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
       else if(val<1600){
@@ -22,6 +24,7 @@ class Values{
         color: Colors.lightBlueAccent,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
       else if(val<1900){
@@ -29,6 +32,7 @@ class Values{
         color: Colors.blue,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     else if(val<2200){
@@ -36,22 +40,33 @@ class Values{
         color: Colors.purple,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     return TextStyle(
       color: Colors.red,
       fontSize: 24,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Ubuntu',
     );
   }
 
 
   TextStyle ranking(String val){
-    if(val=='newbie') {
+    if(val=='Unrated') {
+      return TextStyle(
+        color: Colors.grey,
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
+      );
+    }
+    else if(val=='newbie') {
       return TextStyle(
         color: Colors.black,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     else if(val=='pupil'){
@@ -59,6 +74,7 @@ class Values{
         color: Colors.green,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     else if(val=='specialist'){
@@ -66,6 +82,7 @@ class Values{
         color: Colors.lightBlueAccent,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     else if(val=='expert'){
@@ -73,6 +90,7 @@ class Values{
         color: Colors.blue,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     else if(val=='candidate master'){
@@ -80,12 +98,14 @@ class Values{
         color: Colors.purple,
         fontSize: 24,
         fontWeight: FontWeight.bold,
+        fontFamily: 'Ubuntu',
       );
     }
     return TextStyle(
       color: Colors.red,
       fontSize: 24,
       fontWeight: FontWeight.bold,
+      fontFamily: 'Ubuntu',
     );
   }
 }
@@ -94,6 +114,6 @@ class Values{
 const kstyleTextStyle = TextStyle(
 //  fontFamily: 'Pacifico',
   fontSize: 24,
-  fontWeight: FontWeight.bold,
+  fontWeight: FontWeight.w700,
   fontFamily: 'Ubuntu',
 );

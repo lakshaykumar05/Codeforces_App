@@ -1,4 +1,4 @@
-import 'package:codeforces_app/Constants/Colors.dart';
+import 'package:codeforces_app/Constants/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -204,11 +204,15 @@ class _DisplayScreenState extends State<DisplayScreen> {
       }
     });
 
+    finalCountTagMap.forEach((key, value) {
+      key.toUpperCase();
+    });
+
     // print(TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 33))));
     //   TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 2))): 35,
     //   TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 1))): 14,
 
-    print(everyday_Data);
+    // print(everyday_Data);
     // print(tempMap);
     // print(reverseM);
   }
@@ -228,16 +232,31 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
   void updateUI(dynamic userData) {
   //  print(userAllInfo);
-    userName=userData['result'][0]['handle'];  values.add(userName);
+    userName=userData['result'][0]['handle'];
+    friends=userData['result'][0]['friendOfCount'];
     photo=userData['result'][0]['titlePhoto'];
     contribution=userData['result'][0]['contribution'];
+    maxRank=userData['result'][0]['maxRank'];
+
+    if(maxRank==null){
+      rank="Unrated";
+      maxRank="Unrated";
+      rating=0;
+      maxRating=0;
+      return;
+    }
+
     rank = userData['result'][0]['rank'];
-    mailId=userData['result'][0]['email'];
     rating=userData['result'][0]['rating'];
     maxRating=userData['result'][0]['maxRating'];
     maxRank=userData['result'][0]['maxRank'];
-    friends=userData['result'][0]['friendOfCount'];
-    values.add(userName);  values.add(maxRating.toString()); values.add(rating.toString()); values.add(maxRank); values.add(rank); values.add(contribution.toString()); values.add(friends.toString());
+
+    userName[0].toUpperCase();
+    rank[0].toUpperCase();
+    maxRank[0].toUpperCase();
+    print(userName);
+    print(rank);
+    // values.add(userName);  values.add(maxRating.toString()); values.add(rating.toString()); values.add(maxRank); values.add(rank); values.add(contribution.toString()); values.add(friends.toString());
   }
 
   _printProperties(String text){
@@ -256,8 +275,10 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
   List<String>labels=['Username','Maxrating','Rating','Maxrank','Rank','Contribution','Friends'];
 
+  Size size;
+
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -466,83 +487,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
                             ),
                           ],
                         ),
-                    // labels.generate(7, (index) => printvalue(labels[index],values[index]));
-                        // List.generate(7, (index) => newWiget(li[index],value,Textstyle));
-                        // Expanded(
-                        //   child:
-                        //   // Column(
-                        //   //   children: [
-                        //       Padding(
-                        //         padding: const EdgeInsets.only(left:30.0,top: 10),
-                        //         child: Container(
-                        //           child: Column(
-                        //             mainAxisAlignment: MainAxisAlignment.center,
-                        //             crossAxisAlignment: CrossAxisAlignment.start,
-                        //             children: [
-                        //               _printProperties('Username:'),
-                        //               _printProperties('MaxRating:'),
-                        //               _printProperties('Rating:'),
-                        //               _printProperties('MaxRank:'),
-                        //               _printProperties('Rank:'),
-                        //               _printProperties('Contribution:'),
-                        //               _printProperties('Friends:'),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //       Expanded(
-                        //         child: Container(
-                        //           child: Column(
-                        //             // mainAxisAlignment: MainAxisAlignment.center,
-                        //             crossAxisAlignment: CrossAxisAlignment.start,
-                        //             children: [
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        //                   child: Text('$userName',style: Values().fun(rating),),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        //                   child: Text('$maxRating',style: Values().fun(maxRating),),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        //                   child: Text('$rating',style: Values().fun(rating),),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        //                   child: Text('$maxRank',style: Values().ranking(maxRank),),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.only(top: 14.0),
-                        //                   child: Text('$rank',style: Values().ranking(rank),),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.only(top: 14.0),
-                        //                   child: Text('$contribution',style: kstyleTextStyle,),
-                        //                 ),
-                        //               ),
-                        //               FittedBox(
-                        //                 child: Padding(
-                        //                   padding: const EdgeInsets.only(top: 14.0),
-                        //                   child: Text('$friends',style: kstyleTextStyle,),
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         ),
-                        //       ),
                             ],
                           ),
                         // ),
@@ -554,186 +498,19 @@ class _DisplayScreenState extends State<DisplayScreen> {
                 height: 25,
               ),
               // ),
-                  Container(
-                    width: size.width,
-                    // height: size.height,
-                    child: Column(
-               //      mainAxisSize: MainAxisSize.min,
-                      children: <Widget> [
-                        Text(
-                          'Problem Tags',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                        SizedBox(height: 120.0,),
-                        PieChart(
-                          // colorList: [Colors.blue,Colors.blue,Colors.blue,Colors.red,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.yellow,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue],
-                          dataMap: finalCountTagMap,
-                          colorList: DifferentColors().problemTag(finalCountTagMap.length),
-                          animationDuration: Duration(seconds: 4),
-                          chartLegendSpacing: 120,
-                          chartRadius: MediaQuery.of(context).size.width / 3.2,
-                         // colorList: colorList,
-                          initialAngleInDegree: 0,
-                          chartType: ChartType.ring,
-                          ringStrokeWidth: 200,
-                        //  centerText: "HYBRID",
-                          legendOptions: LegendOptions(
-                            showLegendsInRow: true,
-                            legendPosition: LegendPosition.bottom,
-                            showLegends: true,
-                            legendShape: BoxShape.circle,
-                            legendTextStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          chartValuesOptions: ChartValuesOptions(
-                            showChartValueBackground: false,
-                            showChartValues: false,
-                            showChartValuesInPercentage: false,
-                            showChartValuesOutside: false,
-                            // chartValueStyle: TextStyle(
-                            // )
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              chartOfProblemTag(finalCountTagMap, size, context),
               SizedBox(
                 height: 20,
               ),
-              Container(
-                width: size.width,
-                // height: size.height,
-                child: Column(
-                  //      mainAxisSize: MainAxisSize.min,
-                  children: <Widget> [
-                    Text(
-                      'Verdict',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                    SizedBox(height: 120.0,),
-                    PieChart(
-                      dataMap: countVerdict,
-                      animationDuration: Duration(seconds: 4),
-                      chartLegendSpacing: 120,
-                      chartRadius: MediaQuery.of(context).size.width / 3.2,
-                      colorList: DifferentColors().Verdict(countVerdict.length),
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.ring,
-                      ringStrokeWidth: 200,
-                      //  centerText: "HYBRID",
-                      legendOptions: LegendOptions(
-                        showLegendsInRow: true,
-                        legendPosition: LegendPosition.bottom,
-                        showLegends: true,
-                        legendShape: BoxShape.circle,
-                        legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      chartValuesOptions: ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: false,
-                        showChartValuesInPercentage: false,
-                        showChartValuesOutside: false,
-                        chartValueStyle: TextStyle(
-                          wordSpacing: 5,
-                        )
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              chartOfVerdict(countVerdict, size, context),
               SizedBox(
                 height: 20,
               ),
-              Container(
-                width: size.width,
-                // height: size.height,
-                child: Column(
-                  //      mainAxisSize: MainAxisSize.min,
-                  children: <Widget> [
-                    Text(
-                      'Problem Rating',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-                    SizedBox(height: 120.0,),
-                    PieChart(
-                      dataMap: finalCountRating,
-                      animationDuration: Duration(seconds: 4),
-                      chartLegendSpacing: 120,
-                      chartRadius: MediaQuery.of(context).size.width / 3.2,
-                      colorList: DifferentColors().Rating(finalCountRating.length),
-                      initialAngleInDegree: 0,
-                      chartType: ChartType.ring,
-                      ringStrokeWidth: 200,
-                      //  centerText: "HYBRID",
-                      legendOptions: LegendOptions(
-                        showLegendsInRow: true,
-                        legendPosition: LegendPosition.bottom,
-                        showLegends: true,
-                        legendShape: BoxShape.circle,
-                        legendTextStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      chartValuesOptions: ChartValuesOptions(
-                        showChartValueBackground: false,
-                        showChartValues: false,
-                        showChartValuesInPercentage: false,
-                        showChartValuesOutside: false,
-                        // chartValueStyle: TextStyle(
-                        // )
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              chartOfRating(finalCountRating, size, context),
               SizedBox(
                 height: 30,
               ),
-              Container(
-                width: size.width,
-                child: Column(
-                  children: <Widget>[
-                    // FittedBox(
-                    //   child: Text('Submission Heatmap ',style:
-                    //     TextStyle(
-                    //       color: Colors.black,
-                    //       fontSize: 24,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),),
-                    // ),
-                    // SizedBox(
-                    //   height: 30,
-                    // ),
-                    HeatMapCalendar(
-                      input: everyday_Data,
-                      colorThresholds: {
-                        1: Colors.green[200],
-                        4: Colors.green[400],
-                        10: Colors.green[500],
-                        18: Colors.green[700],
-                        100: Colors.green[900],
-                      },
-                      weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-                      monthsLabels: [
-                        "",
-                        "Jan",
-                        "Feb",
-                        "Mar",
-                        "Apr",
-                        "May",
-                        "Jun",
-                        "Jul",
-                        "Aug",
-                        "Sep",
-                        "Oct",
-                        "Nov",
-                        "Dec",
-                      ],
-                      squareSize: 16.0,
-                      textOpacity: 0.3,
-                      labelTextColor: Colors.blueGrey,
-                      dayTextColor: Colors.blue[500],
-                    ),
-                  ],
-                ),
-              ),
+              submissionHeatmap(everyday_Data, size, context),
             ],
           ),
         ),
@@ -742,17 +519,188 @@ class _DisplayScreenState extends State<DisplayScreen> {
   }
 }
 
+Container chartOfProblemTag(Map<String,double> finalCountTagMap,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Problem Tags',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          // colorList: [Colors.blue,Colors.blue,Colors.blue,Colors.red,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.yellow,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue],
+          dataMap: finalCountTagMap,
+          colorList: DifferentColors().problemTag(finalCountTagMap.length),
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          // colorList: colorList,
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: false,
+            showChartValues: false,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+            // chartValueStyle: TextStyle(
+            // )
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
-// Row printvalue(String label,String value,TextStyle styl){
-//   return Row(
-//     children: [
-//       Flexible(
-//         child: Text(label,style: kstyleTextStyle,),
-//       ),
-//       // SizedBox(width: 15,),
-//       Flexible(
-//           child: Text(value,style: styl,),
-//       ),
-//     ],
-//   );
-// }
+
+Container chartOfVerdict(Map<String,double> countVerdict,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Verdict',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          dataMap: countVerdict,
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: DifferentColors().Verdict(countVerdict.length),
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+              showChartValueBackground: false,
+              showChartValues: false,
+              showChartValuesInPercentage: false,
+              showChartValuesOutside: false,
+              chartValueStyle: TextStyle(
+                wordSpacing: 5,
+              )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Container chartOfRating(Map<String,double> finalCountRating,Size size,BuildContext context){
+  return  Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Problem Rating',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          dataMap: finalCountRating,
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: DifferentColors().Rating(finalCountRating.length),
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: false,
+            showChartValues: false,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+            // chartValueStyle: TextStyle(
+            // )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Container submissionHeatmap(Map<DateTime,int> everyday_Data,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    child: Column(
+      children: <Widget>[
+        FittedBox(
+          child: Text('Submission Heatmap ',style:
+            TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),),
+        ),
+        SizedBox(
+          height: 35,
+        ),
+        HeatMapCalendar(
+          input: everyday_Data,
+          colorThresholds: {
+            1: Colors.green[200],
+            4: Colors.green[400],
+            10: Colors.green[500],
+            18: Colors.green[700],
+            100: Colors.green[900],
+          },
+          weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          monthsLabels: [
+            "",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          squareSize: 16.0,
+          textOpacity: 0.3,
+          labelTextColor: Colors.blueGrey,
+          dayTextColor: Colors.blue[500],
+        ),
+      ],
+    ),
+  );
+}

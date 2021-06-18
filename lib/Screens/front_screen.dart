@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:codeforces_app/Networking/code_forces.dart';
 import 'package:codeforces_app/Screens/display_screen.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:rounded_loading_button/rounded_loading_button.dart';
+import 'dart:async';
+import 'package:intl/intl.dart';
 
 
 class FrontScreen extends StatefulWidget {
@@ -20,10 +22,18 @@ class _FrontScreenState extends State<FrontScreen> {
   }
   @override
 
+  final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
+
+  void _doSomething() async {
+    Timer(Duration(seconds: 3), () {
+      _btnController.success();
+    });
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-          backgroundColor: Colors.blue,
+          backgroundColor: Colors.grey,
           body: Column(
             children: <Widget>[
               Image.asset('images/codeforces.png',
@@ -83,28 +93,38 @@ class _FrontScreenState extends State<FrontScreen> {
               SizedBox(
                 height: 19,
               ),
+            //   RoundedLoadingButton(
+            //     child: Text(
+            //            'Search',
+            //            style: TextStyle(
+            //             // backgroundColor: Colors.black,
+            //              fontSize: 35,
+            // //               color: Colors.black,
+            //            ),
+            //          ),
+            //     controller: _btnController,
+            //     onPressed: () async {
+            //       user_det = await CodeForces().getUserData(userName);
+            //       user_all_det = await CodeForces().getAllInfo(userName);
+            //       print(user_all_det);
+            //       if (user_det == null) {
+            //         showDialog(
+            //           context: context,
+            //           builder: (BuildContext context) => popUpDialog(context),
+            //         );
+            //       }
+            //       else {
+            //         fun(user_all_det);
+            //         await Navigator.push(
+            //             context, MaterialPageRoute(builder: (context) {
+            //           return DisplayScreen(
+            //               userDetails: user_det, userAllInfo: user_all_det);
+            //         }));
+            //         // }
+            //       }
+            //     },
+            //   ),
               ElevatedButton(
-                onPressed: () async{
-                  user_det = await CodeForces().getUserData(userName);
-                  user_all_det = await CodeForces().getAllInfo(userName);
-           //       print(user_all_det);
-           //        if(user_det==null){
-           //          showDialog(
-           //              context: context,
-           //              builder: (BuildContext context) => popUpDialog(context),
-           //          );
-           //        }
-           //        else {
-            //        fun(user_all_det);
-                    await Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return DisplayScreen(userDetails: user_det,userAllInfo: user_all_det);
-                    }));
-                  // }
-                },
-              //  color: Colors.black,
-              //   style: ButtonStyle(
-              //     backgroundColor: MaterialStateProperty<Color>
-              //   ),
                 child: Text(
                   'Search',
                   style: TextStyle(
@@ -113,6 +133,27 @@ class _FrontScreenState extends State<FrontScreen> {
        //               color: Colors.black,
                   ),
                 ),
+                  onPressed: () async {
+                    user_det = await CodeForces().getUserData(userName);
+                    user_all_det = await CodeForces().getAllInfo(userName);
+                    // print(user_all_det);
+                    
+                    if (user_det == null) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) => popUpDialog(context),
+                      );
+                    }
+                    else {
+                      fun(user_all_det);
+                      await Navigator.push(
+                          context, MaterialPageRoute(builder: (context) {
+                        return DisplayScreen(
+                            userDetails: user_det, userAllInfo: user_all_det);
+                      }));
+                      // }
+                    }
+                  },
               ),
             ],
           ),
@@ -120,33 +161,33 @@ class _FrontScreenState extends State<FrontScreen> {
   }
 }
 
-//
-// Widget popUpDialog(BuildContext context) {
-//   return new AlertDialog(
-//     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
-//     title: Center(child: Text('Invalid Handle',
-//     style: TextStyle(
-//       fontSize: 22,
-//     ),)),
-//     actions: <Widget>[
-//       new FlatButton(
-//         onPressed: () {
-//           Navigator.of(context).pop();
-//         },
-//         textColor: Theme.of(context).primaryColor,
-//
-//         child: Padding(
-//           padding: const EdgeInsets.only(right:108.0),
-//           child: Text('OK',style: TextStyle(
-//             fontSize: 21,
-//           ),),
-//           //FaIcon(FontAwesomeIcons.times,size: 50,)
-//           ),
-//         ),
-//         ],
-//   );
-// }
-//
+
+Widget popUpDialog(BuildContext context) {
+  return new AlertDialog(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+    title: Center(child: Text('Invalid Handle',
+    style: TextStyle(
+      fontSize: 22,
+    ),)),
+    actions: <Widget>[
+      new FlatButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        textColor: Theme.of(context).primaryColor,
+
+        child: Padding(
+          padding: const EdgeInsets.only(right:108.0),
+          child: Text('OK',style: TextStyle(
+            fontSize: 21,
+          ),),
+          //FaIcon(FontAwesomeIcons.times,size: 50,)
+          ),
+        ),
+        ],
+  );
+}
+
 
 
 // FlatButton(
