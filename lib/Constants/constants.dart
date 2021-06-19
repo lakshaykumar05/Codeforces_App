@@ -61,7 +61,7 @@ class Values{
         fontFamily: 'Ubuntu',
       );
     }
-    else if(val=='newbie') {
+    else if(val=='Newbie') {
       return TextStyle(
         color: Colors.black,
         fontSize: 24,
@@ -69,7 +69,7 @@ class Values{
         fontFamily: 'Ubuntu',
       );
     }
-    else if(val=='pupil'){
+    else if(val=='Pupil'){
       return TextStyle(
         color: Colors.green,
         fontSize: 24,
@@ -77,7 +77,7 @@ class Values{
         fontFamily: 'Ubuntu',
       );
     }
-    else if(val=='specialist'){
+    else if(val=='Specialist'){
       return TextStyle(
         color: Colors.lightBlueAccent,
         fontSize: 24,
@@ -85,7 +85,7 @@ class Values{
         fontFamily: 'Ubuntu',
       );
     }
-    else if(val=='expert'){
+    else if(val=='Expert'){
       return TextStyle(
         color: Colors.blue,
         fontSize: 24,
@@ -93,7 +93,7 @@ class Values{
         fontFamily: 'Ubuntu',
       );
     }
-    else if(val=='candidate master'){
+    else if(val=='Candidate master'){
       return TextStyle(
         color: Colors.purple,
         fontSize: 24,

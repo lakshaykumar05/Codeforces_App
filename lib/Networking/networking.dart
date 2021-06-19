@@ -6,7 +6,7 @@ class NetworkHelper{
   final String url;
   Future getData() async{
  //   print(24);
-    http.Response response= await http.get(url);
+    http.Response response= await http.get(Uri.parse(url));
  //   print(response.statusCode);
     if(response.statusCode==200){
       var data=response.body;

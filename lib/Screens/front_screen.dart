@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 
 
+
 class FrontScreen extends StatefulWidget {
   @override
   _FrontScreenState createState() => _FrontScreenState();
@@ -16,11 +17,11 @@ class _FrontScreenState extends State<FrontScreen> {
   String userName;
   dynamic user_det;
   dynamic user_all_det;
+  bool isLoading;
   
   void fun(dynamic user_data){
     print(user_data);
   }
-  @override
 
   final RoundedLoadingButtonController _btnController = RoundedLoadingButtonController();
 
@@ -30,10 +31,14 @@ class _FrontScreenState extends State<FrontScreen> {
     });
   }
 
+
+
+  @override
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-          backgroundColor: Colors.grey,
+          backgroundColor: Colors.grey[300],
           body: Column(
             children: <Widget>[
               Image.asset('images/codeforces.png',
@@ -49,6 +54,7 @@ class _FrontScreenState extends State<FrontScreen> {
                       style: TextStyle(
                         fontSize: 45,
                         fontWeight: FontWeight.w900,
+                      fontFamily: 'Ubuntu',
                       //  fontFamily: 'Pacifico',
                       ),
                       ),
@@ -77,6 +83,7 @@ class _FrontScreenState extends State<FrontScreen> {
                         hintText: 'Username',
                         hintStyle: TextStyle(
                           color: Colors.grey,
+                          fontFamily: 'Ubuntu',
                       ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -124,36 +131,63 @@ class _FrontScreenState extends State<FrontScreen> {
             //       }
             //     },
             //   ),
-              ElevatedButton(
-                child: Text(
-                  'Search',
-                  style: TextStyle(
-                   // backgroundColor: Colors.black,
-                    fontSize: 35,
-       //               color: Colors.black,
+            //  CircularIndicator(),
+            //   SizedBox(
+            //     height: 200.0,
+            //     child: Stack(
+            //       children: <Widget>[
+            //         Center(
+            //           child: Container(
+            //             width: 70,
+            //             height: 70,
+            //             child: new CircularProgressIndicator(
+            //               strokeWidth: 5,
+            //               value: 1.0,
+            //             ),
+            //           ),
+            //         ),
+            //         Center(child: Text("Test")),
+            //       ],
+            //     ),
+            //   ),
+              SizedBox(
+                width: 180,
+                height: 70,
+                child: ElevatedButton(
+                  child: new CircularProgressIndicator(
+                    // strokeWidth: 8,
+                    // value: 6.0,
                   ),
+       //          child: Text(
+       //            'Search',
+       //            style: TextStyle(
+       //             // backgroundColor: Colors.black,
+       //              fontSize: 35,
+       // //               color: Colors.black,
+       //            ),
+       //          ),
+                    onPressed: () async {
+                      user_det = await CodeForces().getUserData(userName);
+                      user_all_det = await CodeForces().getAllInfo(userName);
+                      // print(user_all_det);
+
+                      if (user_det == null) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) => popUpDialog(context),
+                        );
+                      }
+                      else {
+                        fun(user_all_det);
+                        await Navigator.push(
+                            context, MaterialPageRoute(builder: (context) {
+                          return DisplayScreen(
+                              userDetails: user_det, userAllInfo: user_all_det);
+                        }));
+                        // }
+                      }
+                    },
                 ),
-                  onPressed: () async {
-                    user_det = await CodeForces().getUserData(userName);
-                    user_all_det = await CodeForces().getAllInfo(userName);
-                    // print(user_all_det);
-                    
-                    if (user_det == null) {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => popUpDialog(context),
-                      );
-                    }
-                    else {
-                      fun(user_all_det);
-                      await Navigator.push(
-                          context, MaterialPageRoute(builder: (context) {
-                        return DisplayScreen(
-                            userDetails: user_det, userAllInfo: user_all_det);
-                      }));
-                      // }
-                    }
-                  },
               ),
             ],
           ),
@@ -188,19 +222,80 @@ Widget popUpDialog(BuildContext context) {
   );
 }
 
-
-
-// FlatButton(
-// onPressed: () {
 //
-// },
-// child: Text(
-// 'Search',
-// style: TextStyle(
-// height: 3,
-// color: Colors.white,
-// backgroundColor: Colors.black,
-// fontSize:35,
-// ),
-// ),
-// ),
+//
+// class CircularIndicator extends StatefulWidget {
+//   const CircularIndicator({Key key}) : super(key: key);
+//
+//   @override
+//   _CircularIndicatorState createState() => _CircularIndicatorState();
+// }
+//
+// class _CircularIndicatorState extends State<CircularIndicator> {
+//
+//   bool visible = true ;
+//
+//   loadProgress(){
+//
+//     if(visible == true){
+//       setState(() {
+//         visible = false;
+//       });
+//     }
+//     else{
+//       setState(() {
+//         visible = true;
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               Visibility(
+//                   maintainSize: true,
+//                   maintainAnimation: true,
+//                   maintainState: true,
+//                   visible: visible,
+//                   child: Container(
+//                       margin: EdgeInsets.only(top: 50, bottom: 30),
+//                       child: CircularProgressIndicator()
+//                   )
+//               ),
+//
+//               RaisedButton(
+//                     onPressed: () async {
+//                      user_det = await CodeForces().getUserData(userName);
+//                      user_all_det = await CodeForces().getAllInfo(userName);
+//                      // print(user_all_det);
+//
+//                      if (user_det == null) {
+//                        showDialog(
+//                          context: context,
+//                          builder: (BuildContext context) => popUpDialog(context),
+//                        );
+//                      }
+//                      else {
+//                        fun(user_all_det);
+//                        await Navigator.push(
+//                            context, MaterialPageRoute(builder: (context) {
+//                          return DisplayScreen(
+//                              userDetails: user_det, userAllInfo: user_all_det);
+//                        }));
+//                        // }
+//                      }
+//                    },
+//                 color: Colors.pink,
+//                 textColor: Colors.white,
+//                 padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+//                 child: Text('Click Here To Show Hide Circular Progress Indicator'),
+//               ),
+//
+//             ],
+//           ),
+//         );
+//   }
+// }

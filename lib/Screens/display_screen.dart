@@ -13,6 +13,7 @@ import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
 import 'package:heatmap_calendar/heatmap_calendar.dart';
 import 'package:heatmap_calendar/time_utils.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 
@@ -25,6 +26,8 @@ class DisplayScreen extends StatefulWidget {
 }
 
 class _DisplayScreenState extends State<DisplayScreen> {
+  var char;
+
 
 
   @override
@@ -51,6 +54,20 @@ class _DisplayScreenState extends State<DisplayScreen> {
   Map<String,double>finalCountRating={};
 
   int total=0;
+  int ch;
+
+  String toCapital(String S){
+    String S1=S[0].toUpperCase()+S.substring(1);
+    return S1;
+    // for(int i=0;i<S.length;i++){
+    //   if(i==0){
+    //     char=S[i];
+    //   }
+    //   else{
+    //
+    //   }
+    // }
+  }
 
   void calc_values(Map user_Info){
     // print(user_Info);
@@ -191,9 +208,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
     var keyss=List.from(reverseM.keys);
 
-    // List<dynamic>tempList=[];
-
-
     for(int i=0;i<min(15,reverseM.length);i++){
       finalCountTagMap[keyss[i]]=reverseM[keyss[i]];
     }
@@ -205,7 +219,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
     });
 
     finalCountTagMap.forEach((key, value) {
-      key.toUpperCase();
+      key=toCapital(key);
     });
 
     // print(TimeUtils.removeTime(DateTime.now().subtract(Duration(days: 33))));
@@ -217,14 +231,16 @@ class _DisplayScreenState extends State<DisplayScreen> {
     // print(reverseM);
   }
 
-  @override
   String rank;
+  String _rank;
   int rating;
   String photo;
   String userName;
+  String _userName;
   int contribution;
   String mailId;
   String maxRank;
+  String _maxRank;
   int maxRating;
   int friends;
 
@@ -232,13 +248,13 @@ class _DisplayScreenState extends State<DisplayScreen> {
 
   void updateUI(dynamic userData) {
   //  print(userAllInfo);
-    userName=userData['result'][0]['handle'];
+    _userName=userData['result'][0]['handle'];
     friends=userData['result'][0]['friendOfCount'];
     photo=userData['result'][0]['titlePhoto'];
     contribution=userData['result'][0]['contribution'];
-    maxRank=userData['result'][0]['maxRank'];
+    _maxRank=userData['result'][0]['maxRank'];
 
-    if(maxRank==null){
+    if(_maxRank==null){
       rank="Unrated";
       maxRank="Unrated";
       rating=0;
@@ -246,16 +262,17 @@ class _DisplayScreenState extends State<DisplayScreen> {
       return;
     }
 
-    rank = userData['result'][0]['rank'];
+    _rank = userData['result'][0]['rank'];
     rating=userData['result'][0]['rating'];
     maxRating=userData['result'][0]['maxRating'];
-    maxRank=userData['result'][0]['maxRank'];
+    _maxRank=userData['result'][0]['maxRank'];
 
-    userName[0].toUpperCase();
-    rank[0].toUpperCase();
-    maxRank[0].toUpperCase();
-    print(userName);
-    print(rank);
+    userName=toCapital(_userName);
+    rank=toCapital(_rank);
+    maxRank=toCapital(_maxRank);
+
+    // print(userName);
+    // print(rank);
     // values.add(userName);  values.add(maxRating.toString()); values.add(rating.toString()); values.add(maxRank); values.add(rank); values.add(contribution.toString()); values.add(friends.toString());
   }
 
@@ -269,14 +286,11 @@ class _DisplayScreenState extends State<DisplayScreen> {
     );
   }
 
-  // List<E>.generate(int length,E generator(int index),{
-  //   bool growable=true
-  // })
-
   List<String>labels=['Username','Maxrating','Rating','Maxrank','Rank','Contribution','Friends'];
 
   Size size;
 
+  @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     return SafeArea(
@@ -296,6 +310,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
         return;
         },
           child: ListView(
+            cacheExtent: 1000,
             children: [
               Padding(
                 padding: const EdgeInsets.all(11.0),
@@ -306,8 +321,12 @@ class _DisplayScreenState extends State<DisplayScreen> {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
-                            child: Image.network(photo,
-                              height: 200,
+                            child: Center(
+                              child: CachedNetworkImage(
+                                imageUrl: photo,
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                              ),
                             ),
                           ),
                         ),
@@ -381,7 +400,7 @@ class _DisplayScreenState extends State<DisplayScreen> {
                                 // color: Colors.yellowAccent,
                                 child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
                                   padding: const EdgeInsets.only(top:10.0,left: 20),
-                                  child: Text(rating.toString(),style: Values().fun(maxRating),),
+                                  child: Text(rating.toString(),style: Values().fun(rating),),
                                 )),
                               ),
                             ),
