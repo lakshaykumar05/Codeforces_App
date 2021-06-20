@@ -59,14 +59,11 @@ class _DisplayScreenState extends State<DisplayScreen> {
   String toCapital(String S){
     String S1=S[0].toUpperCase()+S.substring(1);
     return S1;
-    // for(int i=0;i<S.length;i++){
-    //   if(i==0){
-    //     char=S[i];
-    //   }
-    //   else{
-    //
-    //   }
-    // }
+  }
+
+  String toAllCapital(String S){
+    // String S1=S[0].toUpperCase()+S.substring(1);
+    return S.toUpperCase();
   }
 
   void calc_values(Map user_Info){
@@ -84,12 +81,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
       final String formatted = formatter.format(date);
 
       String dd=date.toString();
-      //
-      // for(int j=11;j<dd.length;j++){
-      //   if(dd[j]!=':'){
-      //     dd[j]='0';
-      //   }
-      // }
 
       // print(date);
       DateTime tempDate = new DateFormat("yyyy-MM-dd").parse(dd);
@@ -101,8 +92,6 @@ class _DisplayScreenState extends State<DisplayScreen> {
         everyday_Data[tempDate]=1;
       }
       // everyday_Data[date]++;
-
-
 
       // For verdict
 
@@ -153,11 +142,12 @@ class _DisplayScreenState extends State<DisplayScreen> {
         List<dynamic> tags = user_Info['result'][i]['problem']['tags'];
 
         for (int j = 0; j < tags.length; j++) {
-          if (countTags.containsKey(tags[j])) {
-            countTags[tags[j]]++;
+          String S=toAllCapital(tags[j]);
+          if (countTags.containsKey(S)) {
+            countTags[S]++;
           }
           else
-            countTags[tags[j]] = 1;
+            countTags[S] = 1;
         }
       }
 
@@ -309,7 +299,421 @@ class _DisplayScreenState extends State<DisplayScreen> {
         overScroll.disallowGlow();
         return;
         },
-          child: ListView(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(11.0),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Center(
+                            child: CachedNetworkImage(
+                              imageUrl: photo,
+                              placeholder: (context, url) => CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    // row= column , column=widget , widget=label,value
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top:10.0,left: 20),
+                                    child: Text(labels[0],style: kstyleTextStyle,),
+                                  )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(fit: BoxFit.scaleDown,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 10,left: 20),
+                                    child: Text('$userName',style: Values().fun(rating),),
+                                  )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[1],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(maxRating.toString(),style: Values().fun(maxRating),),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.brown/,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[2],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.yellowAccent,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(rating.toString(),style: Values().fun(rating),),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.brown,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[3],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.yellowAccent/,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(maxRank,style: Values().ranking(maxRank),),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.brown,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[4],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.yellowAccent,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(rank,style: Values().ranking(rank),),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.brown,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[5],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.yellowAccent,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(contribution.toString(),style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.brown,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(labels[6],style: kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              alignment: Alignment.centerLeft,
+                              // color: Colors.yellowAccent,
+                              child: FittedBox(fit: BoxFit.scaleDown,child: Padding(
+                                padding: const EdgeInsets.only(top:10.0,left: 20),
+                                child: Text(friends.toString(),style:kstyleTextStyle,),
+                              )),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // ),
+                  SizedBox(
+                    height: 45,
+                  ),
+                  // ),
+                  chartOfProblemTag(finalCountTagMap, size, context),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  chartOfVerdict(countVerdict, size, context),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  chartOfRating(finalCountRating, size, context),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  submissionHeatmap(everyday_Data, size, context),
+                ],
+              ),
+              // ],
+            ),
+          ),
+          ),
+        ),
+    );
+  }
+}
+
+Container chartOfProblemTag(Map<String,double> finalCountTagMap,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Problem Tags',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu',),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          // colorList: [Colors.blue,Colors.blue,Colors.blue,Colors.red,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.yellow,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue],
+          dataMap: finalCountTagMap,
+          colorList: DifferentColors().problemTag(finalCountTagMap.length),
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          // colorList: colorList,
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: false,
+            showChartValues: false,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+            // chartValueStyle: TextStyle(
+            // )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Container chartOfVerdict(Map<String,double> countVerdict,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Verdict',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu',),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          dataMap: countVerdict,
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: DifferentColors().Verdict(countVerdict.length),
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+              showChartValueBackground: false,
+              showChartValues: false,
+              showChartValuesInPercentage: false,
+              showChartValuesOutside: false,
+              chartValueStyle: TextStyle(
+                wordSpacing: 5,
+              )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Container chartOfRating(Map<String,double> finalCountRating,Size size,BuildContext context){
+  return  Container(
+    width: size.width,
+    // height: size.height,
+    child: Column(
+      //      mainAxisSize: MainAxisSize.min,
+      children: <Widget> [
+        Text(
+          'Problem Rating',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold,fontFamily: 'Ubuntu',),),
+        SizedBox(height: 120.0,),
+        PieChart(
+          dataMap: finalCountRating,
+          animationDuration: Duration(seconds: 4),
+          chartLegendSpacing: 120,
+          chartRadius: MediaQuery.of(context).size.width / 3.2,
+          colorList: DifferentColors().Rating(finalCountRating.length),
+          initialAngleInDegree: 0,
+          chartType: ChartType.ring,
+          ringStrokeWidth: 200,
+          //  centerText: "HYBRID",
+          legendOptions: LegendOptions(
+            showLegendsInRow: true,
+            legendPosition: LegendPosition.bottom,
+            showLegends: true,
+            legendShape: BoxShape.circle,
+            legendTextStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          chartValuesOptions: ChartValuesOptions(
+            showChartValueBackground: false,
+            showChartValues: false,
+            showChartValuesInPercentage: false,
+            showChartValuesOutside: false,
+            // chartValueStyle: TextStyle(
+            // )
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+
+Container submissionHeatmap(Map<DateTime,int> everyday_Data,Size size,BuildContext context){
+  return Container(
+    width: size.width,
+    child: Column(
+      children: <Widget>[
+        FittedBox(
+          child: Text('Submission Heatmap ',style:
+            TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+              fontFamily: 'Ubuntu',
+              fontWeight: FontWeight.bold,
+            ),),
+        ),
+        SizedBox(
+          height: 35,
+        ),
+        HeatMapCalendar(
+          input: everyday_Data,
+          colorThresholds: {
+            1: Colors.green[200],
+            4: Colors.green[400],
+            10: Colors.green[500],
+            18: Colors.green[700],
+            100: Colors.green[900],
+          },
+          weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+          monthsLabels: [
+            "",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
+          ],
+          squareSize: 16.0,
+          textOpacity: 0.3,
+          labelTextColor: Colors.blueGrey,
+          dayTextColor: Colors.blue[500],
+        ),
+      ],
+    ),
+  );
+}
+
+/*
+ListView(
             cacheExtent: 1000,
             children: [
               Padding(
@@ -532,194 +936,4 @@ class _DisplayScreenState extends State<DisplayScreen> {
               submissionHeatmap(everyday_Data, size, context),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-Container chartOfProblemTag(Map<String,double> finalCountTagMap,Size size,BuildContext context){
-  return Container(
-    width: size.width,
-    // height: size.height,
-    child: Column(
-      //      mainAxisSize: MainAxisSize.min,
-      children: <Widget> [
-        Text(
-          'Problem Tags',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-        SizedBox(height: 120.0,),
-        PieChart(
-          // colorList: [Colors.blue,Colors.blue,Colors.blue,Colors.red,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.yellow,Colors.blue,Colors.blue,Colors.blue,Colors.blue,Colors.blue],
-          dataMap: finalCountTagMap,
-          colorList: DifferentColors().problemTag(finalCountTagMap.length),
-          animationDuration: Duration(seconds: 4),
-          chartLegendSpacing: 120,
-          chartRadius: MediaQuery.of(context).size.width / 3.2,
-          // colorList: colorList,
-          initialAngleInDegree: 0,
-          chartType: ChartType.ring,
-          ringStrokeWidth: 200,
-          //  centerText: "HYBRID",
-          legendOptions: LegendOptions(
-            showLegendsInRow: true,
-            legendPosition: LegendPosition.bottom,
-            showLegends: true,
-            legendShape: BoxShape.circle,
-            legendTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          chartValuesOptions: ChartValuesOptions(
-            showChartValueBackground: false,
-            showChartValues: false,
-            showChartValuesInPercentage: false,
-            showChartValuesOutside: false,
-            // chartValueStyle: TextStyle(
-            // )
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-Container chartOfVerdict(Map<String,double> countVerdict,Size size,BuildContext context){
-  return Container(
-    width: size.width,
-    // height: size.height,
-    child: Column(
-      //      mainAxisSize: MainAxisSize.min,
-      children: <Widget> [
-        Text(
-          'Verdict',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-        SizedBox(height: 120.0,),
-        PieChart(
-          dataMap: countVerdict,
-          animationDuration: Duration(seconds: 4),
-          chartLegendSpacing: 120,
-          chartRadius: MediaQuery.of(context).size.width / 3.2,
-          colorList: DifferentColors().Verdict(countVerdict.length),
-          initialAngleInDegree: 0,
-          chartType: ChartType.ring,
-          ringStrokeWidth: 200,
-          //  centerText: "HYBRID",
-          legendOptions: LegendOptions(
-            showLegendsInRow: true,
-            legendPosition: LegendPosition.bottom,
-            showLegends: true,
-            legendShape: BoxShape.circle,
-            legendTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          chartValuesOptions: ChartValuesOptions(
-              showChartValueBackground: false,
-              showChartValues: false,
-              showChartValuesInPercentage: false,
-              showChartValuesOutside: false,
-              chartValueStyle: TextStyle(
-                wordSpacing: 5,
-              )
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-Container chartOfRating(Map<String,double> finalCountRating,Size size,BuildContext context){
-  return  Container(
-    width: size.width,
-    // height: size.height,
-    child: Column(
-      //      mainAxisSize: MainAxisSize.min,
-      children: <Widget> [
-        Text(
-          'Problem Rating',style: TextStyle(fontSize: 24.0,fontWeight: FontWeight.bold),),
-        SizedBox(height: 120.0,),
-        PieChart(
-          dataMap: finalCountRating,
-          animationDuration: Duration(seconds: 4),
-          chartLegendSpacing: 120,
-          chartRadius: MediaQuery.of(context).size.width / 3.2,
-          colorList: DifferentColors().Rating(finalCountRating.length),
-          initialAngleInDegree: 0,
-          chartType: ChartType.ring,
-          ringStrokeWidth: 200,
-          //  centerText: "HYBRID",
-          legendOptions: LegendOptions(
-            showLegendsInRow: true,
-            legendPosition: LegendPosition.bottom,
-            showLegends: true,
-            legendShape: BoxShape.circle,
-            legendTextStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          chartValuesOptions: ChartValuesOptions(
-            showChartValueBackground: false,
-            showChartValues: false,
-            showChartValuesInPercentage: false,
-            showChartValuesOutside: false,
-            // chartValueStyle: TextStyle(
-            // )
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-
-Container submissionHeatmap(Map<DateTime,int> everyday_Data,Size size,BuildContext context){
-  return Container(
-    width: size.width,
-    child: Column(
-      children: <Widget>[
-        FittedBox(
-          child: Text('Submission Heatmap ',style:
-            TextStyle(
-              color: Colors.black,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),),
-        ),
-        SizedBox(
-          height: 35,
-        ),
-        HeatMapCalendar(
-          input: everyday_Data,
-          colorThresholds: {
-            1: Colors.green[200],
-            4: Colors.green[400],
-            10: Colors.green[500],
-            18: Colors.green[700],
-            100: Colors.green[900],
-          },
-          weekDaysLabels: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-          monthsLabels: [
-            "",
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
-          squareSize: 16.0,
-          textOpacity: 0.3,
-          labelTextColor: Colors.blueGrey,
-          dayTextColor: Colors.blue[500],
-        ),
-      ],
-    ),
-  );
-}
+ */

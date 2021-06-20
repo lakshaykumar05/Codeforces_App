@@ -6,7 +6,13 @@ import 'dart:async';
 import 'package:codeforces_app/Networking/code_forces.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:flutter_launcher_icons/android.dart';
+import 'package:flutter_launcher_icons/constants.dart';
+import 'package:flutter_launcher_icons/custom_exceptions.dart';
+import 'package:flutter_launcher_icons/ios.dart';
+import 'package:flutter_launcher_icons/main.dart';
+import 'package:flutter_launcher_icons/utils.dart';
+import 'package:flutter_launcher_icons/xml_templates.dart';
 
 
 class startScreen extends StatefulWidget {
@@ -32,14 +38,17 @@ class _startScreenState extends State<startScreen> {
 
     var assetImage = new AssetImage('images/codeforces.png');
 
-    var image= new Image(image: assetImage,height: 200,);
+    var image= new Image(image: assetImage,height: 200,width: 400,);
 
-    return Container(
-      decoration: new BoxDecoration(color: Colors.white),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: image,
+    return Scaffold(
+      backgroundColor: Colors.grey[300],
+      body: Container(
+        // decoration: new BoxDecoration(color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Center(
+            child: image,
+          ),
         ),
       ),
     );
